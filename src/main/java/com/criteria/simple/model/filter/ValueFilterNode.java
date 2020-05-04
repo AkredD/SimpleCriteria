@@ -25,41 +25,41 @@ public class ValueFilterNode<T> extends AbstractFilterNode<T> {
 
     private <U> Predicate buildPredicateFromFiltering(Root<T> root, CriteriaBuilder criteriaBuilder) {
         Path<U> targetObject = getFilteringField(root, filtering.getField());
-        U value = TypeSupporting.evaluateTargetValue(targetObject, (String) filtering.getValue());
+        U value = TypeSupporting.evaluateTargetValue(targetObject.getJavaType(), filtering.getValue());
         switch (filtering.getFilterType()) {
             case EQ:
-                return criteriaBuilder.equal(targetObject, filtering.getValue());
+                return criteriaBuilder.equal(targetObject, value);
             case NOT_EQ:
-                return criteriaBuilder.notEqual(targetObject, filtering.getValue());
+                return criteriaBuilder.notEqual(targetObject, value);
             case MORE:
-                if (!(filtering.getValue() instanceof Comparable))
+                if (!(value instanceof Comparable))
                     throw new UnsupportedOperationException("Cannot compare expression: " + filtering.toString());
                 return criteriaBuilder.greaterThan(
                         (Path<Comparable>) targetObject,
-                        (Comparable) filtering.getValue());
+                        (Comparable) value);
             case LESS:
-                if (!(filtering.getValue() instanceof Comparable))
+                if (!(value instanceof Comparable))
                     throw new UnsupportedOperationException("Cannot compare expression: " + filtering.toString());
                 return criteriaBuilder.lessThan(
                         (Path<Comparable>) targetObject,
-                        (Comparable) filtering.getValue());
+                        (Comparable) value);
             case IN:
-                var listIn = (filtering.getValue() instanceof Iterable)
-                        ? formArray((Iterable) filtering.getValue())
-                        : Collections.singletonList(filtering.getValue());
+                var listIn = (value instanceof Iterable)
+                        ? formArray((Iterable) value)
+                        : Collections.singletonList(value);
                 return criteriaBuilder.in(targetObject)
                         .in(listIn);
             case NOT_INT:
-                var listNotIn = (filtering.getValue() instanceof Iterable)
-                        ? formArray((Iterable) filtering.getValue())
-                        : Collections.singletonList(filtering.getValue());
+                var listNotIn = (value instanceof Iterable)
+                        ? formArray((Iterable) value)
+                        : Collections.singletonList(value);
                 return criteriaBuilder.in(targetObject)
                         .in(listNotIn).not();
             case LIKE:
-                String likeExpression = filtering.getValue().toString();
+                String likeExpression = value.toString();
                 return criteriaBuilder.like((Path<String>) targetObject, likeExpression);
             case NOT_LIKE:
-                String notLikeExpression = filtering.getValue().toString();
+                String notLikeExpression = value.toString();
                 return criteriaBuilder.notLike((Path<String>) targetObject, notLikeExpression);
             default:
                 throw new UnsupportedOperationException("Unsupported filter " + filtering.toString());
