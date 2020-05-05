@@ -1,6 +1,6 @@
 package com.criteria.simple.model.filter;
 
-enum FilterType {
+public enum FilterType {
     EQ,
     NOT_EQ,
     MORE,

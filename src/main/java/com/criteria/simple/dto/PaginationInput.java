@@ -1,5 +1,6 @@
 package com.criteria.simple.dto;
 
+import com.criteria.simple.model.Pagination;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,4 +16,8 @@ public class PaginationInput {
     private List<PaginationSortInput> sort;
 
     private PaginationFilterExpressionInput filter;
+
+    public <T> Pagination<T> transformToPagination(Class<T> dtoClass) {
+        return new Pagination<>(this, dtoClass);
+    }
 }

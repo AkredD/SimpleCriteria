@@ -7,7 +7,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class OrFilterNode<T> extends AbstractFilterNode<T> {
-    protected OrFilterNode(List<AbstractFilterNode<T>> childNode) {
+    public OrFilterNode(List<AbstractFilterNode<T>> childNode) {
         super(childNode);
     }
 

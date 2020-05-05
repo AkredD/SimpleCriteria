@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AndFilterNode<T> extends AbstractFilterNode<T> {
 
-    protected AndFilterNode(@NonNull List<AbstractFilterNode<T>> childNode) {
+    public AndFilterNode(@NonNull List<AbstractFilterNode<T>> childNode) {
         super(childNode);
     }
 

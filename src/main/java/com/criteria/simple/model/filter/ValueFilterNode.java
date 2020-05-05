@@ -13,7 +13,7 @@ import java.util.stream.StreamSupport;
 public class ValueFilterNode<T> extends AbstractFilterNode<T> {
     private final Filtering filtering;
 
-    protected ValueFilterNode(Filtering filtering) {
+    public ValueFilterNode(Filtering filtering) {
         super(null);
         this.filtering = filtering;
     }
